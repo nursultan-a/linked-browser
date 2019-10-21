@@ -5,6 +5,8 @@
 
 #include "Node.hpp"
 
+using namespace std;
+
 template <class T>
 class LinkedList
 {
@@ -46,18 +48,24 @@ LinkedList<T>::LinkedList()
 {
     /* TODO */
     /* constructor for without any argument*/
-    this.head->next = this.tail;
-    this.head->prev = nullptr;
-
-    this.tail->next = nullptr;
-    this.tail->prev = this.tail;
+    head->next = tail;
+    tail->prev = head;
 
 }
 
+// copy constructor
 template<class T>
 LinkedList<T>::LinkedList(const LinkedList &obj)
 {
     /* TODO */
+    LinkedList<T>  *givenCurrent;
+    LinkedList<T>  *newCurrent;
+
+    if(givenObject != NULL){
+        LinkedList<T> *newLinkedList = new LinkedList<T>;
+        this->head = obj->head;
+        this->tail = obj->tail;
+    }
 }
 
 template<class T>
@@ -93,7 +101,7 @@ int LinkedList<T>::getNumberOfNodes()
     /* TODO */
     int counter = 0;
     Node<T> *current = this.head;
-    while(current != nullptr){
+    while(current != NULL){
         counter++;
         current = current->next;
     }
@@ -122,11 +130,11 @@ template<class T>
 void LinkedList<T>::insertAtTheEnd(const T &data)
 {
     /* TODO */
-    data->next = this.tail;
-    this.tail->prev = data;
+    data->next = tail;
+    tail->prev = data;
     
-    data->prev = this.tail->prev;
-    this.tail->prev->next = data;
+    data->prev = tail->prev;
+    tail->prev->next = data;
 }
 
 template<class T>
@@ -165,8 +173,8 @@ template<class T>
 void LinkedList<T>::printAllNodes()
 {
     /* TODO */
-    Node<T> *current = this.head->next;
-    while(current != this.tail){
+    Node<T> *current = head->next;
+    while(current != tail){
         cout << current->element << endl;
         current = current->next;
     }
@@ -177,8 +185,8 @@ template<class T>
 void LinkedList<T>::printReversed()
 {
     /* TODO */
-    Node<T> *current = this.tail->prev;
-    while(current != this.head){
+    Node<T> *current = tail->prev;
+    while(current != head){
         cout << current->element << endl;
         current = current->prev;
     }
