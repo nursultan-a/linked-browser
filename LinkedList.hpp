@@ -61,10 +61,24 @@ LinkedList<T>::LinkedList(const LinkedList &obj)
     LinkedList<T>  *givenCurrent;
     LinkedList<T>  *newCurrent;
 
-    if(givenObject != NULL){
-        LinkedList<T> *newLinkedList = new LinkedList<T>;
+    givenCurrent = obj->head;
+
+    if(givenCurrent != NULL){
+        
         this->head = obj->head;
         this->tail = obj->tail;
+
+
+        givenCurrent = givenCurrent->next;
+
+        while(givenCurrent != this->tail){
+            Node<T> newNode = new Node<T>;
+            newNode 
+
+
+            
+
+        }
     }
 }
 
