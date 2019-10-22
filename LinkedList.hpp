@@ -48,6 +48,9 @@ LinkedList<T>::LinkedList()
 {
     /* TODO */
     /* constructor for without any argument*/
+    head = new Node<T>;
+    tail = new Node<T>;
+
     head->next = tail;
     tail->prev = head;
 
@@ -58,27 +61,35 @@ template<class T>
 LinkedList<T>::LinkedList(const LinkedList &obj)
 {
     /* TODO */
-    LinkedList<T>  *givenCurrent;
-    LinkedList<T>  *newCurrent;
+    head = new Node<T>;
+    tail = new Node<T>;
 
-    givenCurrent = obj->head;
+    Node<T>  *givenCurrent;
+    Node<T>  *newCurrent;
+
+    givenCurrent = obj.head;
 
     if(givenCurrent != NULL){
-        
-        this->head = obj->head;
-        this->tail = obj->tail;
-
 
         givenCurrent = givenCurrent->next;
 
-        while(givenCurrent != this->tail){
-            Node<T> newNode = new Node<T>;
-            newNode 
+        head->next = new Node<T>(givenCurrent->element, head, NULL);
+        newCurrent = head->next;
 
 
-            
+        while(givenCurrent != obj.tail){
+            givenCurrent = givenCurrent->next;
+            newCurrent->next = new Node<T>(givenCurrent->element, newCurrent, NULL);
 
+            newCurrent = newCurrent->next;
         }
+        tail = new Node<T>;
+        tail->prev = newCurrent;
+        newCurrent->next = tail;
+    }
+    else{
+        head->next = tail;
+        tail->prev = head;
     }
 }
 
@@ -92,21 +103,21 @@ template<class T>
 Node<T> * LinkedList<T>::getFirstNode() const
 {
     /* TODO */
-    return this.head->next;
+    return this->head->next;
 }
 
 template<class T>
 Node<T> * LinkedList<T>::getHead() const
 {
     /* TODO */
-    return this.head;
+    return this->head;
 }
 
 template<class T>
 Node<T> * LinkedList<T>::getTail() const
 {
     /* TODO */
-    return this.tail;
+    return this->tail;
 }
 
 template<class T>
@@ -133,22 +144,16 @@ template<class T>
 void LinkedList<T>::insertAtTheFront(const T &data)
 {
     /* TODO */
-    data->next = this.head->next;
-    this.head->next->prev = data;
 
-    this.head->next = data;
-    data.prev = this.head;
 }
 
 template<class T>
 void LinkedList<T>::insertAtTheEnd(const T &data)
 {
     /* TODO */
-    data->next = tail;
-    tail->prev = data;
-    
-    data->prev = tail->prev;
-    tail->prev->next = data;
+    Node<T> *tmp = tail->prev;
+    tmp->next = new Node<T>(data, tmp, tail);
+    tail->prev = tmp->next;
 }
 
 template<class T>
@@ -169,6 +174,15 @@ template<class T>
 void LinkedList<T>::removeNode(Node<T> *node)
 {
     /* TODO */
+    if(node != NULL){
+        Node<T> *prev = node->prev;
+        Node<T> *next = node->next;
+
+        prev->next = next;
+        next->prev = prev;
+
+        delete node;//CHECK: is it right way?
+    }
 }
 
 template<class T>
@@ -181,6 +195,15 @@ template<class T>
 Node<T> * LinkedList<T>::findNode(const T &data)
 {
     /* TODO */
+
+    Node<T> *current = head->next;
+    while(current != tail){
+        if(current->element == data){
+            return current;
+        }
+        current = current->next;
+    }
+    return NULL;
 }
 
 template<class T>
