@@ -13,8 +13,17 @@ int main() {
     llist.insertAtTheEnd(1);
     llist.insertAtTheEnd(7);
     llist.insertAtTheEnd(4);
+    llist.insertAtTheFront(444);
 
+    cout << "--------------" << endl;
     llist.printAllNodes();
+
+    cout << "--------------" << endl;
+    cout << llist.getNumberOfNodes()<< endl;
+    cout << "-------printallnodes-------" << endl;
+    llist.printAllNodes();
+    cout << "-------printReversed-------" << endl;
+    llist.printReversed();
 
     // cout << "--------------" << endl;
     // LinkedList<int> newList(llist);
@@ -27,8 +36,16 @@ int main() {
     // cout << "-------ll  after changing nl-------" << endl;
     // llist.printAllNodes();
 
+    cout << "--------------" << endl;
     llist.removeNode(llist.findNode(4));
     llist.printAllNodes();
+
+    cout << "--------------" << endl;
+    cout << llist.getNumberOfNodes()<< endl;
+    
+    cout << "------removeallnodes--------" << endl;
+    llist.removeAllNodes();
+    cout << llist.getNumberOfNodes()<< endl;
 
     return 0;
 }
