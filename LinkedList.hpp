@@ -78,14 +78,17 @@ LinkedList<T>::LinkedList(const LinkedList &obj)
 
 
         while(givenCurrent != obj.tail){
+            // cout << "creating node for node with dadta:  " << givenCurrent->element << endl;
             givenCurrent = givenCurrent->next;
-            newCurrent->next = new Node<T>(givenCurrent->element, newCurrent, NULL);
-
-            newCurrent = newCurrent->next;
+            if(givenCurrent != obj.tail){
+                newCurrent->next = new Node<T>(givenCurrent->element, newCurrent, NULL);
+                newCurrent = newCurrent->next;
+            }
+            
         }
-        tail = new Node<T>;
         tail->prev = newCurrent;
         newCurrent->next = tail;
+        cout << "tail element?: " << tail->element << endl;
     }
     else{
         head->next = tail;
@@ -97,6 +100,7 @@ template<class T>
 LinkedList<T>::~LinkedList()
 {
     /* TODO */
+    // cout << "------------------------------------------------- destructor---------------------" << endl;
     Node<T> *current = head->next;
     Node<T> *tmp = NULL;
     delete head;
@@ -104,7 +108,7 @@ LinkedList<T>::~LinkedList()
         while(current != tail){
             tmp = current;
             current = current->next;
-
+            // cout << "------------------------------------------------- deleting: " << tmp->element << endl;
             delete tmp;
         }        
     }
@@ -157,7 +161,7 @@ template<class T>
 bool LinkedList<T>::isEmpty()
 {
     /* TODO */
-    return this.head->next == this.tail;
+    return head->next == tail;
 }
 
 template<class T>
@@ -207,13 +211,21 @@ void LinkedList<T>::removeNode(Node<T> *node)
         Node<T> *prev = node->prev;
         Node<T> *next = node->next;
 
-        prev->next = next;
-        next->prev = prev;
-
+        if(prev != NULL){
+            prev->next = next;
+        }
+        if(next != NULL){
+            next->prev = prev;
+        }
+        
+        node->next = NULL;
+        node->prev = NULL;
         delete node;//CHECK: is it right way?
     }
 }
 
+
+// remove all nodes, except dummy nodes
 template<class T>
 void LinkedList<T>::removeAllNodes()
 {
@@ -221,8 +233,18 @@ void LinkedList<T>::removeAllNodes()
     Node<T> *current = head->next;
     
     while(current != tail){
+        current->prev->next = current->next;
+        current->next->prev = current->prev;
+
         Node<T> *deletable = current;
         current = current->next;
+
+        deletable->prev = NULL;
+        deletable->next = NULL;
+
+        
+
+        
 
         delete deletable;
 
@@ -273,6 +295,9 @@ template<class T>
 LinkedList<T> & LinkedList<T>::operator=(const LinkedList &rhs)
 {
     /* TODO */
+    LinkedList<T> temp(rhs);
+    std::swap(temp.head, head);
+    return *this;
 }
 
 #endif //LINKED_LIST_HPP
