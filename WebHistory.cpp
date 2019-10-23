@@ -69,11 +69,14 @@ void WebHistory::printHistory()
 WebHistory::WebHistory(std::string url, int timestamp)
 {
 	// TODO
+
+	history.insertAtTheEnd(Tab(url, timestamp));
 }
 
 WebHistory::~WebHistory()
 {
 	// TODO
+
 }
 
 void WebHistory::insertInOrder(Node<Tab> *newPage)

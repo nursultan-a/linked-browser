@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-c -ansi -Wall -pedantic-errors -O0
+CFLAGS=-c -g -ansi -Wall -pedantic-errors -O0
 
 all: linkedlist browser
 

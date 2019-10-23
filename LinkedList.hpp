@@ -78,7 +78,6 @@ LinkedList<T>::LinkedList(const LinkedList &obj)
 
 
         while(givenCurrent != obj.tail){
-            // cout << "creating node for node with dadta:  " << givenCurrent->element << endl;
             givenCurrent = givenCurrent->next;
             if(givenCurrent != obj.tail){
                 newCurrent->next = new Node<T>(givenCurrent->element, newCurrent, NULL);
@@ -88,7 +87,6 @@ LinkedList<T>::LinkedList(const LinkedList &obj)
         }
         tail->prev = newCurrent;
         newCurrent->next = tail;
-        // cout << "tail element?: " << tail->element << endl;
     }
     else{
         head->next = tail;
@@ -105,7 +103,9 @@ LinkedList<T>::~LinkedList()
         tmp = head->next;
         delete head;
         head = tmp;
-    }        
+    }
+    tail = NULL;
+    head = NULL; 
 }
 
 template<class T>
@@ -214,6 +214,7 @@ void LinkedList<T>::removeNode(Node<T> *node)
         node->next = NULL;
         node->prev = NULL;
         delete node;//CHECK: is it right way?
+        node = NULL;
     }
 }
 
@@ -224,22 +225,17 @@ void LinkedList<T>::removeAllNodes()
 {
     /* TODO */
     Node<T> *current = head->next;
-    Node<T> *deletable = NULL;
     
     while(current != tail){
-        current->prev->next = current->next;
-        current->next->prev = current->prev;
+        head->next = current->next;
+        current->next->prev = head;
 
-        deletable = current;
-        current = current->next;
-
-        deletable->prev = NULL;
-        deletable->next = NULL;
-        delete deletable;
+        delete current;
+        current = head->next;
 
     }
+    current = NULL;
     tail->prev = head;
-    head->next = tail;
 }
 
 template<class T>
