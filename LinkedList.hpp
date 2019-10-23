@@ -88,7 +88,7 @@ LinkedList<T>::LinkedList(const LinkedList &obj)
         }
         tail->prev = newCurrent;
         newCurrent->next = tail;
-        cout << "tail element?: " << tail->element << endl;
+        // cout << "tail element?: " << tail->element << endl;
     }
     else{
         head->next = tail;
@@ -100,19 +100,12 @@ template<class T>
 LinkedList<T>::~LinkedList()
 {
     /* TODO */
-    // cout << "------------------------------------------------- destructor---------------------" << endl;
-    Node<T> *current = head->next;
-    Node<T> *tmp = NULL;
-    delete head;
-    if(current != tail){
-        while(current != tail){
-            tmp = current;
-            current = current->next;
-            // cout << "------------------------------------------------- deleting: " << tmp->element << endl;
-            delete tmp;
-        }        
-    }
-    delete tail;
+    Node<T> *tmp;
+    while(head != NULL){
+        tmp = head->next;
+        delete head;
+        head = tmp;
+    }        
 }
 
 template<class T>
@@ -231,21 +224,17 @@ void LinkedList<T>::removeAllNodes()
 {
     /* TODO */
     Node<T> *current = head->next;
+    Node<T> *deletable = NULL;
     
     while(current != tail){
         current->prev->next = current->next;
         current->next->prev = current->prev;
 
-        Node<T> *deletable = current;
+        deletable = current;
         current = current->next;
 
         deletable->prev = NULL;
         deletable->next = NULL;
-
-        
-
-        
-
         delete deletable;
 
     }
@@ -297,6 +286,7 @@ LinkedList<T> & LinkedList<T>::operator=(const LinkedList &rhs)
     /* TODO */
     LinkedList<T> temp(rhs);
     std::swap(temp.head, head);
+    std::swap(temp.tail, tail);
     return *this;
 }
 
