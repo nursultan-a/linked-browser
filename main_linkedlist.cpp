@@ -7,21 +7,26 @@ using namespace std;
 int main() {
     LinkedList<int> llist;
 
-    llist.insertAtTheEnd(1);
+   
     llist.insertAtTheEnd(7);
     llist.insertAtTheEnd(4);
     llist.insertAtTheEnd(444);
     llist.insertAtTheFront(444);
     llist.insertAtTheFront(444);
 
+    Node<int> *dNode = llist.findNode(4);
+
     llist.printAllNodes();
 
+    llist.removeNode(dNode);
+    llist.removeNode(dNode);
 
     // LinkedList<int> newList = llist;
     
 
-    // llist.removeNode(llist.findNode(7));
+   
     // llist.removeAllNodes();
+    // llist.printAllNodes();
     // llist.findNode(3);
     // llist.printAllNodes();
 

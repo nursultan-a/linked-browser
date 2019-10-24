@@ -69,47 +69,175 @@ void WebHistory::printHistory()
 WebHistory::WebHistory(std::string url, int timestamp)
 {
 	// TODO
-
-	history.insertAtTheEnd(Tab(url, timestamp));
+	Tab newTab(url, timestamp);
+	history.insertAtTheEnd(newTab);
+	
 }
 
 WebHistory::~WebHistory()
 {
 	// TODO
-
+	history.~LinkedList<Tab>();
 }
 
 void WebHistory::insertInOrder(Node<Tab> *newPage)
 {
 	// TODO
+	Node<Tab> *head = history.getHead();
+	Node<Tab> *tail = history.getTail();
+	int controller = 0;
+
+	Node<Tab> *current = head->next;
+
+	if(history.isEmpty()){
+		head->next = newPage;
+		newPage->prev = head;
+
+		tail->prev = newPage;
+		newPage->next = tail;
+		controller = 99;
+	}else{
+		while(current != tail){
+			if(newPage->element.getTimestamp() > current->element.getTimestamp()){
+				newPage->next = current;
+				newPage->prev = current->prev;
+
+				current->prev->next = newPage;
+				current->prev = newPage;
+
+				controller = 99;
+
+				break;
+			}
+			current = current->next;
+		}
+
+	}
+
+	if(controller != 99){
+		newPage->next = tail;
+		newPage->prev = tail->prev;
+
+		tail->prev->next = newPage;
+		tail->prev = newPage;
+
+	}
+
+	
 }
 
 void WebHistory::goToPage(std::string url, int timestamp)
 {
 	// TODO
+	Tab newTab(url, timestamp);
+	Node<Tab> *newPage = new Node<Tab>(newTab, NULL, NULL);
+	insertInOrder(newPage);
 }
 
 void WebHistory::clearHistory()
 {
 	// TODO
+	history.removeAllNodes();
 }
 
 void WebHistory::clearHistory(int timestamp)
 {
 	// TODO
+	Node<Tab> *head = history.getHead();
+	Node<Tab> *tail = history.getTail();
+	Node<Tab> *current = head->next;
+
+	while(current != tail){
+		if(current->element.getTimestamp() == timestamp){
+			current->next->prev = current->prev;
+			current->prev->next = current->next;
+
+			delete current;
+			break;
+		}
+		current = current->next;
+	}
 }
 
 WebHistory WebHistory::operator+(const WebHistory &rhs) const
 {
 	// TODO
+	Node<Tab> *rhsHead = rhs.history.getHead();
+	Node<Tab> *rhsTail = rhs.history.getTail();
+
+	Node<Tab> *lhsHead = history.getHead();
+	Node<Tab> *lhsTail = history.getTail();
+
+	WebHistory newWebHistory;
+
+	if(rhsHead->next != rhsTail){
+		Node<Tab> *current = rhsHead->next;
+
+		while(current != rhsTail){
+			Node<Tab> *newPage = new Node<Tab>(current->element, NULL, NULL);
+			newWebHistory.insertInOrder(newPage);
+			current = current->next;
+		}
+	}
+
+	if(lhsHead->next != lhsTail){
+		Node<Tab> *current = lhsHead->next;
+
+		while(current != lhsTail){
+			Node<Tab> *newPage = new Node<Tab>(current->element, NULL, NULL);
+			newWebHistory.insertInOrder(newPage);
+			current = current->next;
+		}
+	}
+
+	return newWebHistory;
 }
 
 int WebHistory::timesVisited(std::string pageName)
 {
 	// BONUS
+	int counter = 0;
+	Node<Tab> *head = history.getHead();
+	Node<Tab> *tail = history.getTail();
+
+	Node<Tab> *current = head->next;
+
+	while(current != tail){
+		if(current->element.getWebSite() == pageName){
+			counter++;
+		}
+		current = current->next;
+	}
+
+	return counter;
 }
 
 std::string WebHistory::mostVisited()
 {
 	// BONUS
+	Node<Tab> *head = history.getHead();
+	Node<Tab> *tail = history.getTail();
+
+	Node<Tab> *current = head->next;
+
+
+	int currentWebsiteVisitNumber = 0;
+	int max=0;
+	std::string websiteName;
+
+	// cout << "Before loop" << endl;
+
+	while(current != tail){
+		// cout << "Inside loop: " << current->element.getUrl() << endl;
+		currentWebsiteVisitNumber = timesVisited(current->element.getWebSite());
+		if (max < currentWebsiteVisitNumber){
+			max = currentWebsiteVisitNumber;
+			websiteName = current->element.getWebSite();
+
+			// cout << current->element.getWebSite() << ":" << timesVisited(current->element.getWebSite()) << endl;
+		}
+		current = current->next;
+	}
+
+	return websiteName;
 }

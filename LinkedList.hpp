@@ -200,21 +200,17 @@ template<class T>
 void LinkedList<T>::removeNode(Node<T> *node)
 {
     /* TODO */
-    if(node != NULL){
-        Node<T> *prev = node->prev;
-        Node<T> *next = node->next;
-
-        if(prev != NULL){
-            prev->next = next;
+    if(node != NULL && node != head && node != tail){
+        Node<T> *current = head->next;
+        while(current != tail){
+            if(current == node){
+                node->prev->next = node->next;
+                node->next->prev = node->prev;
+                delete node;
+                break;
+            }
+            current = current->next;
         }
-        if(next != NULL){
-            next->prev = prev;
-        }
-        
-        node->next = NULL;
-        node->prev = NULL;
-        delete node;//CHECK: is it right way?
-        node = NULL;
     }
 }
 
