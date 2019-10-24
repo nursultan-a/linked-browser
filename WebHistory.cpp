@@ -225,16 +225,12 @@ std::string WebHistory::mostVisited()
 	int max=0;
 	std::string websiteName;
 
-	// cout << "Before loop" << endl;
 
 	while(current != tail){
-		// cout << "Inside loop: " << current->element.getUrl() << endl;
 		currentWebsiteVisitNumber = timesVisited(current->element.getWebSite());
 		if (max < currentWebsiteVisitNumber){
 			max = currentWebsiteVisitNumber;
 			websiteName = current->element.getWebSite();
-
-			// cout << current->element.getWebSite() << ":" << timesVisited(current->element.getWebSite()) << endl;
 		}
 		current = current->next;
 	}
